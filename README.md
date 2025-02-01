@@ -1,4 +1,5 @@
-# Java Spring Boot demo with Vercel
+# Khu Mo Distillery Web with Vercel
 
 ## Overview
-In this project, I will learn how to work with Java Springboot Framework
+A website used to advertise Khu Mo Distillery products: White Wines - Tropical Fruit Wines - Giftcard - Wines for Special Events
+Version 1: A basic website with Java Spring Boot
