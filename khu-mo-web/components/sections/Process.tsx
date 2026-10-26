@@ -13,7 +13,13 @@ export function Process({ locale }: ProcessProps) {
   return (
     <Section id="process" eyebrow={t.process.eyebrow} title={t.process.title}>
       <div className="relative mb-5 aspect-[16/5] overflow-hidden rounded border border-mineral-white/15">
-        <Image src={siteConfig.process.backgroundImage} alt="" fill className="object-cover" />
+        <Image
+          src={siteConfig.process.backgroundImage}
+          alt={t.process.imageAlt}
+          fill
+          sizes="(min-width: 1152px) 1152px, 100vw"
+          className="object-cover"
+        />
       </div>
       <ol className="grid gap-4 md:grid-cols-5">
         {t.process.steps.map((step, index) => (

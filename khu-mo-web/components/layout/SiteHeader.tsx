@@ -19,10 +19,10 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
           href={`/${locale}`}
           className="rounded px-1 py-0.5 text-lg font-semibold tracking-[0.2em] text-mineral-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
         >
-          KHU MO
+          KHU MỎ
         </Link>
 
-        <nav className="hidden md:block" aria-label="Primary">
+        <nav className="hidden md:block" aria-label={t.nav.primaryLabel}>
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.href}>

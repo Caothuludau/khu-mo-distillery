@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isLocale } from "@/lib/i18n";
+import { DEFAULT_LOCALE, isLocale } from "@/lib/i18n";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
   }
 
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = `/vi${pathname === "/" ? "" : pathname}`;
+  redirectUrl.pathname = `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`;
   return NextResponse.redirect(redirectUrl);
 }
 

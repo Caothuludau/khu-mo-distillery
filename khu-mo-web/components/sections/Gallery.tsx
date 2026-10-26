@@ -2,15 +2,7 @@ import Image from "next/image";
 import { Section } from "@/components/ui/Section";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site-config";
-
-const tiles = [
-  "Mountain Source",
-  "Copper Stills",
-  "Cellar Resting",
-  "Bottling Bench",
-  "Ritual Pour",
-  "Night Service",
-] as const;
+import { cn } from "@/lib/utils";
 
 type GalleryProps = {
   locale: Locale;
@@ -22,23 +14,34 @@ export function Gallery({ locale }: GalleryProps) {
   return (
     <Section id="gallery" eyebrow={t.gallery.eyebrow} title={t.gallery.title}>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tiles.map((tile, index) => (
-          <figure
-            key={tile}
-            className="relative flex aspect-[4/3] items-end overflow-hidden rounded border border-mineral-white/15 bg-gradient-to-br from-iron-gray to-charcoal p-4"
-          >
-            <Image
-              src={siteConfig.gallery.images[index] ?? "/images/section-image.svg"}
-              alt=""
-              fill
-              className="object-cover opacity-80"
-            />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(176,141,87,0.35),_transparent_60%)]" />
-            <figcaption className="relative text-sm font-medium uppercase tracking-[0.12em] text-mineral-white/90">
-              {tile}
-            </figcaption>
-          </figure>
-        ))}
+        {siteConfig.gallery.items.map(({ key, image, fit }, index) => {
+          const featured = index === 0;
+          return (
+            <figure
+              key={key}
+              className={cn(
+                "relative h-64 overflow-hidden rounded border border-mineral-white/15 bg-gradient-to-br from-iron-gray to-charcoal lg:h-72",
+                featured && "sm:col-span-2",
+              )}
+            >
+              <Image
+                src={image}
+                alt={t.gallery.captions[key]}
+                fill
+                sizes={
+                  featured
+                    ? "(min-width: 1024px) 66vw, 100vw"
+                    : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                }
+                className={fit === "contain" ? "object-contain px-8 pb-16 pt-8" : "object-cover"}
+              />
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-charcoal/90 via-charcoal/40 to-transparent" />
+              <figcaption className="absolute inset-x-0 bottom-0 p-4 text-sm font-medium uppercase tracking-[0.12em] text-mineral-white">
+                {t.gallery.captions[key]}
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
     </Section>
   );

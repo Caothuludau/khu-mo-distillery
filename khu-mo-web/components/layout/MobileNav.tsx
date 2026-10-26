@@ -33,7 +33,7 @@ export function MobileNav({ locale }: MobileNavProps) {
           className="fixed inset-0 z-50 bg-charcoal/80 backdrop-blur-sm"
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile navigation"
+          aria-label={t.nav.mobileLabel}
         >
           <div
             id="mobile-nav-panel"
@@ -41,7 +41,7 @@ export function MobileNav({ locale }: MobileNavProps) {
           >
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold uppercase tracking-[0.16em] text-mineral-white/80">
-                Khu Mo
+                Khu Mỏ
               </span>
               <button
                 type="button"
@@ -55,7 +55,7 @@ export function MobileNav({ locale }: MobileNavProps) {
 
             <LocaleSwitcher locale={locale} label={t.nav.language} />
 
-            <nav aria-label="Mobile">
+            <nav aria-label={t.nav.mobileLabel}>
               <ul className="space-y-2">
                 {navLinks.map((link) => (
                   <li key={link.href}>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { LOCALES, type Locale } from "@/lib/i18n";
 
 function replaceLocale(pathname: string, locale: Locale): string {
@@ -20,15 +20,12 @@ type LocaleSwitcherProps = {
 
 export function LocaleSwitcher({ locale, label }: LocaleSwitcherProps) {
   const pathname = usePathname() || "/";
-  const searchParams = useSearchParams();
-  const queryString = searchParams.toString();
 
   return (
     <div className="flex items-center gap-1">
       <span className="sr-only">{label}</span>
       {LOCALES.map((value) => {
-        const hrefBase = replaceLocale(pathname, value);
-        const href = queryString ? `${hrefBase}?${queryString}` : hrefBase;
+        const href = replaceLocale(pathname, value);
         const active = value === locale;
         return (
           <Link

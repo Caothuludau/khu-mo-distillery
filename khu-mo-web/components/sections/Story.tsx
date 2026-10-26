@@ -16,7 +16,13 @@ export function Story({ locale }: StoryProps) {
         <div className="space-y-5">
           <p className="text-base leading-7 text-mineral-white/85 md:text-lg">{t.story.body}</p>
           <div className="relative aspect-[16/10] overflow-hidden rounded border border-mineral-white/15">
-            <Image src={siteConfig.story.image} alt="" fill className="object-cover" />
+            <Image
+              src={siteConfig.story.image}
+              alt={t.story.imageAlt}
+              fill
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
         <ul className="space-y-3">
