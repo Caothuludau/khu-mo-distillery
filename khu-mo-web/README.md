@@ -28,17 +28,21 @@ npm run start
 
 - `NEXT_PUBLIC_SITE_URL` (optional): canonical site URL for metadata and SEO
   files; defaults to `http://localhost:3000` in development.
-- `LEADS_WEBHOOK_URL` (optional): future forwarding target for contact leads.
-  If unset, the contact API route safely logs/handles payloads with a local
-  stub behavior.
+- `LEADS_WEBHOOK_URL` (optional): contact leads are POSTed here as JSON
+  (`name`, `email`, `phone`, `interest`, `message`, `createdAt`). If unset, the
+  contact API route only logs the lead server-side.
 
 ## Included v1 pages/routes
 
 - `/` redirects to default locale `/vi`
-- `/{locale}` brochure homepage (`/vi`, `/en`)
+- `/{locale}` brochure homepage (`/vi`, `/en`), statically generated
 - `/{locale}/legal/privacy` legal placeholder
 - `/{locale}/legal/terms` legal placeholder
-- `/api/contact` POST contact endpoint (validated input)
+- `/api/contact` POST contact endpoint (validated input, honeypot field,
+  in-memory rate limit of 5 requests per IP per 10 minutes)
+
+Product "Enquire" buttons link to `/{locale}?interest=product&product={key}#contact`,
+which preselects the interest and pre-fills the message.
 
 ## Locale language settings
 
@@ -50,11 +54,15 @@ npm run start
 ## Change banner and section images
 
 - Edit `content/site-config.json` to swap images per section.
-- Image files should be placed in `public/images/`.
+- Image files should be placed in `public/images/`. Prefer compressed WebP/JPG
+  (a few hundred KB) over multi-MB PNG exports.
 - Current keys:
-  - `hero.backgroundImage`
+  - `hero.logoImage` (light logo on transparent background)
   - `story.image`
-  - `product.items[].image`
+  - `product.items[].image` (`key` must exist in `lib/site-config.ts`)
   - `process.backgroundImage`
-  - `gallery.images[]`
+  - `gallery.items[]` (`key` selects the caption in `lib/i18n.ts`; optional
+    `fit`: `cover` | `contain`)
   - `contact.backgroundImage`
+- Copy (including product names/blurbs and gallery captions) lives in
+  `lib/i18n.ts`.
