@@ -8,7 +8,7 @@ import { getDictionary, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const TOPBAR_HEIGHT_PX = 64;
-const DOCKED_LOGO_HEIGHT_PX = 40;
+export const DOCKED_LOGO_HEIGHT_PX = 40;
 /** Gap between the large logo and the bottom of the hero, as a fraction of the viewport height. */
 const BOTTOM_GAP_RATIO = 0.1;
 
@@ -72,8 +72,8 @@ export function AnimatedLogo({ locale }: AnimatedLogoProps) {
     <Link
       ref={ref}
       href={`/${locale}`}
-      aria-label={t.nav.home}
-      className="fixed left-1/2 top-0 z-[45] w-[min(55vw,450px)] origin-top rounded-sm will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      aria-label={t.nav.homeLogo}
+      className="fixed left-1/2 top-0 z-[45] w-[min(55vw,450px,50svh)] origin-top rounded-sm will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
       // Matches the scripted start position so the logo is placed correctly before hydration.
       style={{ transform: `translate3d(-50%, calc(${(1 - BOTTOM_GAP_RATIO) * 100}svh - 100%), 0)` }}
     >
@@ -81,10 +81,10 @@ export function AnimatedLogo({ locale }: AnimatedLogoProps) {
         className={cn(
           "block transition-[color,filter] duration-700",
           docked
-            ? "text-foreground"
+            ? "text-ivory"
             : tone === "light"
-              ? "text-mineral-white drop-shadow-[0_2px_18px_rgb(0_0_0/0.45)]"
-              : "text-charcoal drop-shadow-[0_2px_18px_rgb(255_255_255/0.55)]",
+              ? "text-ivory drop-shadow-[0_2px_18px_rgb(14_27_46/0.5)]"
+              : "text-navy drop-shadow-[0_2px_18px_rgb(244_240_232/0.6)]",
         )}
       >
         <BrandMark className="w-full" />

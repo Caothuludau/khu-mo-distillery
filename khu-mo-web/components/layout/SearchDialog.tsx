@@ -1,54 +1,44 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, X } from "lucide-react";
-import { useSiteUI } from "@/components/providers/SiteUIProvider";
+import { ArrowRight, Search, SearchX, X } from "lucide-react";
+import { ProductImage } from "@/components/products/ProductImage";
 import { Dialog } from "@/components/ui/Dialog";
-import { getDictionary, type Locale } from "@/lib/i18n";
-import { siteConfig, type ProductKey } from "@/lib/site-config";
-
-/** Case- and diacritic-insensitive form, so "ruou" matches "rượu". */
-function normalize(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[đĐ]/g, "d")
-    .toLowerCase();
-}
+import { format, getDictionary, type Locale } from "@/lib/i18n";
+import { normalizeSearch, products, text } from "@/lib/products";
 
 type SearchDialogProps = {
   locale: Locale;
   open: boolean;
   onClose: () => void;
-  isHome: boolean;
 };
 
-export function SearchDialog({ locale, open, onClose, isHome }: SearchDialogProps) {
+export function SearchDialog({ locale, open, onClose }: SearchDialogProps) {
   const t = getDictionary(locale);
   const router = useRouter();
-  const { focusProduct } = useSiteUI();
   const [query, setQuery] = useState("");
+  const trimmed = query.trim();
 
   const results = useMemo(() => {
-    const words = normalize(query).split(/\s+/).filter(Boolean);
-    return siteConfig.product.items.filter(({ key }) => {
-      const item = t.discover.items[key];
-      const haystack = normalize(`${item.name} ${item.blurb} ${t.discover.categories[item.category]}`);
+    const words = normalizeSearch(trimmed).split(/\s+/).filter(Boolean);
+    return products.filter((product) => {
+      const haystack = normalizeSearch(
+        [
+          text(product.name, locale),
+          text(product.tagline, locale),
+          text(product.description, locale),
+          t.products.categories[product.category],
+        ].join(" "),
+      );
       return words.every((word) => haystack.includes(word));
     });
-  }, [query, t]);
+  }, [trimmed, locale, t]);
 
-  function select(key: ProductKey) {
+  function finish() {
     onClose();
     setQuery("");
-    focusProduct(key);
-    if (isHome) {
-      window.setTimeout(() => document.getElementById("discover")?.scrollIntoView(), 50);
-    } else {
-      router.push(`/${locale}#discover`);
-    }
   }
 
   return (
@@ -59,10 +49,11 @@ export function SearchDialog({ locale, open, onClose, isHome }: SearchDialogProp
           onSubmit={(event) => {
             event.preventDefault();
             if (results[0]) {
-              select(results[0].key);
+              finish();
+              router.push(`/${locale}/products/${results[0].slug}`);
             }
           }}
-          className="flex items-center gap-3 border-b border-line pb-3"
+          className="flex items-center gap-3 border-b-2 border-heading/20 pb-3 focus-within:border-gold"
         >
           <Search className="size-5 shrink-0 text-muted" aria-hidden />
           <label htmlFor="site-search" className="sr-only">
@@ -76,43 +67,62 @@ export function SearchDialog({ locale, open, onClose, isHome }: SearchDialogProp
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t.search.placeholder}
-            className="min-h-12 w-full bg-transparent text-lg outline-none placeholder:text-muted/70"
+            className="min-h-12 w-full bg-transparent text-lg outline-none placeholder:text-muted/80"
           />
           <button
             type="button"
-            aria-label={t.nav.close}
+            aria-label={t.common.close}
             onClick={onClose}
-            className="inline-flex size-10 shrink-0 items-center justify-center rounded-full transition hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full transition hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <X className="size-5" aria-hidden />
           </button>
         </form>
 
-        <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-muted" aria-live="polite">
-          {results.length === 0 ? t.search.empty : query ? null : t.search.hint}
-        </p>
-        <ul className="mt-3 grid gap-2 sm:grid-cols-3">
-          {results.map(({ key, image }) => {
-            const item = t.discover.items[key];
-            return (
-              <li key={key}>
-                <button
-                  type="button"
-                  onClick={() => select(key)}
-                  className="flex w-full items-center gap-3 rounded-sm p-2 text-left transition hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        <div aria-live="polite">
+          {results.length === 0 ? (
+            <div className="mt-6 flex items-start gap-3">
+              <SearchX className="mt-0.5 size-5 shrink-0 text-highlight" aria-hidden />
+              <div>
+                <p className="font-semibold text-heading">{format(t.search.noResults, { q: trimmed })}</p>
+                <p className="mt-1 text-sm text-muted">{t.search.noResultsHint}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-5 text-sm font-medium text-muted">
+              {trimmed ? format(t.products.resultCount, { n: results.length }) : t.search.hint}
+            </p>
+          )}
+        </div>
+
+        {results.length ? (
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {results.map((product) => (
+              <li key={product.slug}>
+                <Link
+                  href={`/${locale}/products/${product.slug}`}
+                  onClick={finish}
+                  className="flex items-center gap-3 rounded-sm p-2 transition hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
-                  <span className="relative size-14 shrink-0 overflow-hidden rounded-sm bg-surface-muted">
-                    <Image src={image} alt="" fill sizes="56px" className="object-cover" />
-                  </span>
+                  <ProductImage product={product} locale={locale} sizes="56px" className="size-14 shrink-0" compact />
                   <span>
-                    <span className="block font-semibold">{item.name}</span>
-                    <span className="block text-xs text-muted">{t.discover.categories[item.category]}</span>
+                    <span className="block font-semibold text-heading">{text(product.name, locale)}</span>
+                    <span className="block text-sm text-muted">{t.products.categories[product.category]}</span>
                   </span>
-                </button>
+                </Link>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        ) : null}
+
+        <Link
+          href={`/${locale}/products`}
+          onClick={finish}
+          className="mt-5 inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-heading underline-offset-4 hover:underline"
+        >
+          {t.search.viewAll}
+          <ArrowRight className="size-4" aria-hidden />
+        </Link>
       </div>
     </Dialog>
   );

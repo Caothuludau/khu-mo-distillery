@@ -9,6 +9,7 @@ type ThemeToggleProps = {
   locale: Locale;
 };
 
+/** Segmented light/dark control for the menu drawer. */
 export function ThemeToggle({ locale }: ThemeToggleProps) {
   const t = getDictionary(locale);
   const { theme, setTheme } = useTheme();
@@ -28,15 +29,40 @@ export function ThemeToggle({ locale }: ThemeToggleProps) {
             aria-pressed={active}
             onClick={() => setTheme(value)}
             className={cn(
-              "inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-              active ? "bg-foreground text-background" : "text-muted hover:text-foreground",
+              "inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+              active ? "bg-heading text-background" : "text-muted hover:text-foreground",
             )}
           >
-            <Icon className="size-3.5" aria-hidden />
+            <Icon className="size-4" aria-hidden />
             {label}
           </button>
         );
       })}
     </div>
+  );
+}
+
+type ThemeIconButtonProps = {
+  locale: Locale;
+  className?: string;
+};
+
+/** Single icon button for the desktop top bar. */
+export function ThemeIconButton({ locale, className }: ThemeIconButtonProps) {
+  const t = getDictionary(locale);
+  const { theme, setTheme } = useTheme();
+  const dark = theme === "dark";
+  const label = dark ? t.nav.switchToLight : t.nav.switchToDark;
+
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={() => setTheme(dark ? "light" : "dark")}
+      className={className}
+    >
+      {dark ? <Sun className="size-5" aria-hidden /> : <Moon className="size-5" aria-hidden />}
+    </button>
   );
 }

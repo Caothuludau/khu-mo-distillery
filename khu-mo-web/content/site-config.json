@@ -3,30 +3,50 @@
     "logoImage": "/images/khu-mo-logo-light.png",
     "logoAspectRatio": 2.3015
   },
-  "hero": {
-    "intervalMs": 6500,
-    "slides": [
-      { "key": "highland", "image": "/images/product-highland-reserve.webp", "logoTone": "light" },
-      { "key": "craft", "image": "/images/distillery.webp", "logoTone": "light" },
-      { "key": "bloom", "image": "/images/product-copper-bloom.webp", "logoTone": "dark" },
-      { "key": "frost", "image": "/images/product-river-stone.webp", "logoTone": "light" }
-    ]
+  "company": {
+    "name": "Công ty TNHH Sản xuất & Thương mại Khu Mỏ",
+    "address": "Số 03, Tổ 8, Khu Tân Lập 2, P. Cẩm Thủy, TP. Cẩm Phả, Quảng Ninh",
+    "phone": null,
+    "email": null,
+    "taxCode": null,
+    "facebookUrl": null
   },
-  "product": {
-    "items": [
-      { "key": "highland-reserve", "image": "/images/product-highland-reserve.webp" },
-      { "key": "copper-bloom", "image": "/images/product-copper-bloom.webp" },
-      { "key": "river-stone", "image": "/images/product-river-stone.webp" }
+  "hero": {
+    "intervalMs": 7000,
+    "slides": [
+      {
+        "key": "brand",
+        "image": "/images/ruou-nep-nhiet-doi-hoang-hon.webp",
+        "logoTone": "light",
+        "href": "/story"
+      },
+      {
+        "key": "distillery",
+        "image": "/images/xuong-chung-cat.webp",
+        "logoTone": "light",
+        "href": "/story#process"
+      },
+      {
+        "key": "product",
+        "image": "/images/ruou-nep-nhiet-doi-hoa-dao.webp",
+        "logoTone": "dark",
+        "href": "/products/ruou-nep-nhiet-doi"
+      }
     ]
   },
   "story": {
-    "image": "/images/distillery.webp"
-  },
-  "visit": {
-    "poster": "/images/distillery.webp",
-    "videoSrc": null
+    "image": "/images/xuong-chung-cat.webp"
   },
   "process": {
-    "backgroundImage": "/images/distillery.webp"
-  }
+    "image": "/images/xuong-chung-cat.webp"
+  },
+  "salesPoints": [
+    {
+      "name": "Xưởng Khu Mỏ",
+      "address": "Số 03, Tổ 8, Khu Tân Lập 2, P. Cẩm Thủy, TP. Cẩm Phả, Quảng Ninh",
+      "phone": null,
+      "hours": null,
+      "type": "distillery"
+    }
+  ]
 }

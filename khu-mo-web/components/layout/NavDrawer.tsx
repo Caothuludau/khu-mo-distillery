@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
+import { getMainNav, isActive } from "@/components/layout/nav";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { useSiteUI } from "@/components/providers/SiteUIProvider";
+import { Button } from "@/components/ui/Button";
 import { Dialog, DialogHeader } from "@/components/ui/Dialog";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 type NavDrawerProps = {
   locale: Locale;
@@ -14,57 +19,57 @@ type NavDrawerProps = {
 
 export function NavDrawer({ locale, open, onClose }: NavDrawerProps) {
   const t = getDictionary(locale);
-  const links = [
-    { href: `/${locale}#discover`, label: t.nav.discover },
-    { href: `/${locale}#story`, label: t.nav.story },
-    { href: `/${locale}#visit`, label: t.nav.visit },
-    { href: `/${locale}#process`, label: t.nav.process },
-  ];
+  const pathname = usePathname() || `/${locale}`;
+  const { openEnquiry } = useSiteUI();
 
   return (
     <Dialog open={open} onClose={onClose} side="left" label={t.nav.menuLabel}>
-      <div className="flex h-full flex-col">
-        <DialogHeader title={t.nav.menuLabel} closeLabel={t.nav.close} onClose={onClose} />
+      <div className="flex min-h-full flex-col">
+        <DialogHeader title={t.nav.menuLabel} closeLabel={t.common.close} onClose={onClose} />
 
-        <nav aria-label={t.nav.menuLabel} className="px-3 py-6">
+        <nav aria-label={t.nav.mainLabel} className="px-3 py-4">
           <ul className="space-y-1">
-            {links.map((link, index) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={onClose}
-                  className="group flex min-h-14 items-baseline gap-4 rounded-sm px-3 text-2xl font-semibold tracking-tight transition hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                >
-                  <span className="text-xs font-semibold text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="transition group-hover:translate-x-1">{link.label}</span>
-                </Link>
-              </li>
-            ))}
+            {getMainNav(locale).map((link) => {
+              const active = isActive(pathname, link.href, locale);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={onClose}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-13 items-center gap-3 rounded-sm border-l-2 px-4 text-xl font-semibold transition hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                      active ? "border-gold text-heading" : "border-transparent text-foreground",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
-        <div className="mt-auto space-y-5 border-t border-line px-6 py-6">
+        <div className="px-6">
+          <Button
+            className="w-full"
+            onClick={() => {
+              onClose();
+              openEnquiry({ interest: "purchase" });
+            }}
+          >
+            {t.nav.orderCta}
+          </Button>
+        </div>
+
+        <div className="mt-auto space-y-4 border-t border-line px-6 py-6">
           <div className="flex items-center justify-between gap-4">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {t.nav.language}
-            </span>
+            <span className="text-sm font-medium text-muted">{t.nav.language}</span>
             <LocaleSwitcher locale={locale} label={t.nav.language} />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-              {t.nav.theme}
-            </span>
+            <span className="text-sm font-medium text-muted">{t.nav.theme}</span>
             <ThemeToggle locale={locale} />
-          </div>
-          <div className="flex gap-4 pt-2 text-xs text-muted">
-            <Link href={`/${locale}/legal/privacy`} onClick={onClose} className="hover:text-foreground">
-              {t.footer.privacy}
-            </Link>
-            <Link href={`/${locale}/legal/terms`} onClick={onClose} className="hover:text-foreground">
-              {t.footer.terms}
-            </Link>
           </div>
         </div>
       </div>

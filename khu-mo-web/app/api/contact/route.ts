@@ -1,32 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { CONTACT_LIMITS, INTEREST_VALUES } from "@/lib/contact";
+import { buildEnquirySchema } from "@/lib/contact";
+import { getDictionary } from "@/lib/i18n";
+import { getProduct } from "@/lib/products";
 
-const contactSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(CONTACT_LIMITS.nameMin, "Please enter your name.")
-    .max(CONTACT_LIMITS.nameMax, "Name is too long."),
-  email: z
-    .string()
-    .trim()
-    .max(CONTACT_LIMITS.emailMax, "Email is too long.")
-    .email("Please enter a valid email."),
-  phone: z
-    .string()
-    .trim()
-    .max(CONTACT_LIMITS.phoneMax, "Phone number is too long.")
-    .optional()
-    .or(z.literal("")),
-  interest: z.enum(INTEREST_VALUES),
-  message: z
-    .string()
-    .trim()
-    .min(CONTACT_LIMITS.messageMin, "Please share a bit more detail.")
-    .max(CONTACT_LIMITS.messageMax, "Message is too long."),
-  website: z.string().optional(),
-});
+const enquirySchema = buildEnquirySchema(getDictionary("en").form.validation);
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
@@ -82,7 +60,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const parsed = contactSchema.safeParse(payload);
+  const parsed = enquirySchema.safeParse(payload);
   if (!parsed.success) {
     return NextResponse.json(
       {
@@ -94,20 +72,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, phone, interest, message, website } = parsed.data;
+  const { website, consent, ...fields } = parsed.data;
 
   // Honeypot: real visitors never see this field, so silently accept and drop bot submissions.
   if (website) {
     return NextResponse.json({ ok: true });
   }
 
-  const trimmedPhone = phone?.trim();
+  const product = fields.product ? getProduct(fields.product) : undefined;
   const leadPayload = {
-    name,
-    email,
-    phone: trimmedPhone ? trimmedPhone : undefined,
-    interest,
-    message,
+    ...Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== "" && value !== undefined)),
+    productName: product?.name.vi,
+    consent,
     createdAt: new Date().toISOString(),
   };
 

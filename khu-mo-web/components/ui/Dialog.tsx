@@ -72,12 +72,12 @@ type DialogHeaderProps = {
 export function DialogHeader({ title, closeLabel, onClose }: DialogHeaderProps) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
-      <h2 className="text-sm font-semibold uppercase tracking-[0.18em]">{title}</h2>
+      <h2 className="text-lg font-semibold text-heading">{title}</h2>
       <button
         type="button"
         aria-label={closeLabel}
         onClick={onClose}
-        className="inline-flex size-10 items-center justify-center rounded-full transition hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="inline-flex size-11 items-center justify-center rounded-full transition hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <X className="size-5" aria-hidden />
       </button>

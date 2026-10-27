@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useSiteUI } from "@/components/providers/SiteUIProvider";
+import { buttonStyles } from "@/components/ui/Button";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -61,10 +63,10 @@ export function HeroBanner({ locale }: HeroBannerProps) {
 
   const isLight = tone === "light";
   const controlClass = cn(
-    "inline-flex size-10 items-center justify-center rounded-full border backdrop-blur-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+    "inline-flex size-10 items-center justify-center rounded-full border backdrop-blur-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
     isLight
-      ? "border-mineral-white/40 bg-charcoal/20 text-mineral-white hover:bg-charcoal/40"
-      : "border-charcoal/30 bg-white/30 text-charcoal hover:bg-white/50",
+      ? "border-ivory/40 bg-navy-deep/25 text-ivory hover:bg-navy-deep/45"
+      : "border-navy/30 bg-ivory/40 text-navy hover:bg-ivory/60",
   );
 
   return (
@@ -72,7 +74,7 @@ export function HeroBanner({ locale }: HeroBannerProps) {
       id="top"
       aria-roledescription="carousel"
       aria-label={t.hero.label}
-      className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-charcoal"
+      className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-navy-deep"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -116,9 +118,9 @@ export function HeroBanner({ locale }: HeroBannerProps) {
           isLight ? "opacity-100" : "opacity-0",
         )}
       >
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-charcoal/55 to-transparent" />
-        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-charcoal/55 via-charcoal/15 to-transparent md:w-2/3" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-charcoal/60 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy-deep/60 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-navy-deep/65 via-navy-deep/20 to-transparent md:w-2/3" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-deep/65 to-transparent" />
       </div>
       <div
         aria-hidden
@@ -127,13 +129,13 @@ export function HeroBanner({ locale }: HeroBannerProps) {
           isLight ? "opacity-0" : "opacity-100",
         )}
       >
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white/60 to-transparent" />
-        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-white/65 via-white/20 to-transparent md:w-2/3" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/55 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ivory/70 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-ivory/80 via-ivory/30 to-transparent md:w-2/3" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ivory/65 to-transparent" />
       </div>
 
-      <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pt-28 md:px-10 md:pt-0">
-        <div className="md:my-auto md:pb-[18svh]" aria-live={playing ? "off" : "polite"}>
+      <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pt-24 md:px-10 md:pt-32">
+        <div className="grid" aria-live={playing ? "off" : "polite"}>
           {slides.map((slide, index) => {
             const copy = t.hero.slides[slide.key];
             const current = index === active;
@@ -142,18 +144,27 @@ export function HeroBanner({ locale }: HeroBannerProps) {
                 key={slide.key}
                 aria-hidden={!current}
                 className={cn(
-                  "max-w-md transition-all duration-700",
-                  current ? "translate-y-0 opacity-100" : "pointer-events-none absolute translate-y-3 opacity-0",
-                  isLight ? "text-mineral-white" : "text-charcoal",
+                  "col-start-1 row-start-1 max-w-xl transition-all duration-700",
+                  current ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0",
+                  isLight ? "text-ivory" : "text-navy",
                 )}
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] opacity-80">
-                  {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+                <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.16em]">
+                  <span className="h-px w-8 bg-gold" aria-hidden />
+                  {copy.eyebrow}
                 </p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
+                <h2 className="mt-4 text-[2rem] font-bold leading-[1.15] sm:text-[2.375rem] lg:text-5xl xl:text-[3.5rem]">
                   {copy.title}
                 </h2>
-                <p className="mt-3 text-base leading-7 opacity-90 md:text-lg">{copy.description}</p>
+                <p className="mt-4 text-base leading-7 opacity-90 md:text-lg">{copy.description}</p>
+                <Link
+                  href={`/${locale}${slide.href}`}
+                  tabIndex={current ? undefined : -1}
+                  className={buttonStyles(isLight ? "light" : "primary", "mt-7")}
+                >
+                  {copy.cta}
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
               </div>
             );
           })}
@@ -189,9 +200,9 @@ export function HeroBanner({ locale }: HeroBannerProps) {
           >
             <span
               className={cn(
-                "block h-0.5 rounded-full transition-all duration-500 group-focus-visible:ring-2 group-focus-visible:ring-accent",
+                "block h-0.5 rounded-full transition-all duration-500 group-focus-visible:ring-2 group-focus-visible:ring-gold",
                 index === active ? "w-10" : "w-5 opacity-50 group-hover:opacity-80",
-                isLight ? "bg-mineral-white" : "bg-charcoal",
+                isLight ? "bg-ivory" : "bg-navy",
               )}
             />
           </button>
@@ -199,11 +210,11 @@ export function HeroBanner({ locale }: HeroBannerProps) {
       </div>
 
       <a
-        href="#discover"
+        href="#product-lines"
         aria-label={t.hero.scrollHint}
         className={cn(
           "absolute bottom-2 left-1/2 hidden -translate-x-1/2 rounded-full p-1 transition md:block",
-          isLight ? "text-mineral-white/80" : "text-charcoal/70",
+          isLight ? "text-ivory/80" : "text-navy/70",
         )}
       >
         <ChevronDown className="size-5 motion-safe:animate-bounce" aria-hidden />

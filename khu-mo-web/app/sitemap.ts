@@ -1,12 +1,27 @@
 import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/site-url";
-import { getLocaleAlternates, LOCALES } from "@/lib/i18n";
+import { getLocaleAlternates, LEGAL_DOCS, LOCALES } from "@/lib/i18n";
+import { products } from "@/lib/products";
 
-const pages = [
+type Page = {
+  path: string;
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+  priority: number;
+};
+
+const pages: Page[] = [
   { path: "", changeFrequency: "monthly", priority: 1 },
-  { path: "/legal/privacy", changeFrequency: "yearly", priority: 0.2 },
-  { path: "/legal/terms", changeFrequency: "yearly", priority: 0.2 },
-] as const;
+  { path: "/products", changeFrequency: "monthly", priority: 0.9 },
+  ...products.map((product) => ({
+    path: `/products/${product.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  })),
+  { path: "/story", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/where-to-buy", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/partners", changeFrequency: "yearly", priority: 0.6 },
+  ...LEGAL_DOCS.map((doc) => ({ path: `/legal/${doc}`, changeFrequency: "yearly" as const, priority: 0.2 })),
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getSiteUrl();

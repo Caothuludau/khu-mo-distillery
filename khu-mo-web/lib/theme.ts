@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { THEME_STORAGE_KEY } from "@/lib/theme-script";
+import { STORAGE_KEYS } from "@/lib/init-script";
 
 export type Theme = "light" | "dark";
 
@@ -25,7 +25,7 @@ export function useTheme() {
       delete document.documentElement.dataset.theme;
     }
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
+      localStorage.setItem(STORAGE_KEYS.theme, next);
     } catch {
       // Storage can be unavailable (private mode); the theme still applies for this visit.
     }

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { LOCALES, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-function replaceLocale(pathname: string, locale: Locale): string {
+export function replaceLocale(pathname: string, locale: Locale): string {
   const segments = pathname.split("/");
   if (segments.length > 1 && LOCALES.includes(segments[1] as Locale)) {
     segments[1] = locale;
@@ -33,8 +33,8 @@ export function LocaleSwitcher({ locale, label }: LocaleSwitcherProps) {
             hrefLang={value}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "inline-flex min-h-9 items-center rounded-full px-3 text-xs font-semibold uppercase tracking-[0.14em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-              active ? "bg-foreground text-background" : "text-muted hover:text-foreground",
+              "inline-flex min-h-10 min-w-11 items-center justify-center rounded-full px-3 text-sm font-semibold uppercase transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+              active ? "bg-heading text-background" : "text-muted hover:text-foreground",
             )}
           >
             {value}

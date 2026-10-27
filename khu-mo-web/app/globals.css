@@ -3,51 +3,68 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /*
- * Brand tokens — source: UI_UX_BRAND.md
- * Charcoal, iron gray, copper, gold, mineral white
+ * Design tokens — source: documents/UI_UX_DESIGN_SPEC.md §4.3
+ * Brand: Mine Navy, Warm Ivory, Coal Black, Mineral Gold.
+ * Gold is decorative on light surfaces; small gold text uses the darker `highlight` token for contrast.
  */
 :root {
-  --brand-charcoal: #111111;
-  --brand-iron-gray: #2b2b2b;
-  --brand-copper: #8a5a3b;
-  --brand-gold: #b08d57;
-  --brand-mineral-white: #edeae4;
+  --brand-navy: #152844;
+  --brand-navy-deep: #0e1b2e;
+  --brand-ivory: #f4f0e8;
+  --brand-coal: #272727;
+  --brand-gold: #b89452;
+  --brand-plum: #5b2340;
+  --brand-amber: #c9822b;
+  --brand-blue: #2f5d9a;
 
-  /* Light theme (default). Copper is the accent because gold lacks contrast on light surfaces. */
-  --background: #f6f4ef;
-  --foreground: #111111;
-  --surface: #ffffff;
-  --surface-muted: #edeae4;
-  --line: rgb(17 17 17 / 0.12);
-  --muted: #55524d;
-  --accent: #8a5a3b;
-  --accent-hover: #6f4630;
-  --accent-foreground: #f6f4ef;
+  --background: #f4f0e8;
+  --foreground: #272727;
+  --heading: #152844;
+  --surface: #fbf9f5;
+  --surface-muted: #ebe5d9;
+  --line: rgb(39 39 39 / 0.14);
+  --muted: #59554e;
+  --accent: #152844;
+  --accent-hover: #1f3a61;
+  --accent-foreground: #f4f0e8;
+  --highlight: #7d5f27;
+  --danger: #a12a1f;
+  --success: #1f6b3a;
 
   --topbar-height: 4rem;
 }
 
 [data-theme="dark"] {
-  --background: #111111;
-  --foreground: #edeae4;
-  --surface: #2b2b2b;
-  --surface-muted: #1b1b1b;
-  --line: rgb(237 234 228 / 0.15);
-  --muted: #b9b6b0;
-  --accent: #b08d57;
-  --accent-hover: #c9a56c;
-  --accent-foreground: #111111;
+  --background: #0e1b2e;
+  --foreground: #e9e4da;
+  --heading: #f4f0e8;
+  --surface: #152844;
+  --surface-muted: #112038;
+  --line: rgb(244 240 232 / 0.14);
+  --muted: #b3ada2;
+  --accent: #b89452;
+  --accent-hover: #cba867;
+  --accent-foreground: #0e1b2e;
+  --highlight: #cba867;
+  --danger: #f08a7e;
+  --success: #7fcf98;
 }
 
 @theme inline {
-  --color-charcoal: var(--brand-charcoal);
-  --color-iron-gray: var(--brand-iron-gray);
-  --color-copper: var(--brand-copper);
+  --font-sans: var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy: var(--brand-navy);
+  --color-navy-deep: var(--brand-navy-deep);
+  --color-ivory: var(--brand-ivory);
+  --color-coal: var(--brand-coal);
   --color-gold: var(--brand-gold);
-  --color-mineral-white: var(--brand-mineral-white);
+  --color-plum: var(--brand-plum);
+  --color-amber: var(--brand-amber);
+  --color-blue: var(--brand-blue);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
   --color-line: var(--line);
@@ -55,6 +72,9 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
 }
 
 html {
@@ -82,6 +102,15 @@ body {
 }
 
 html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Age gate: rendered on the server, hidden before paint for visitors who already confirmed. */
+html[data-age-ok] .age-gate {
+  display: none;
+}
+
+html:not([data-age-ok]):has(.age-gate) {
   overflow: hidden;
 }
 
@@ -125,7 +154,7 @@ dialog.site-dialog[open] {
 }
 
 dialog.site-dialog::backdrop {
-  background: rgb(17 17 17 / 0);
+  background: rgb(14 27 46 / 0);
   backdrop-filter: blur(0);
   transition:
     background 250ms ease,
@@ -135,13 +164,13 @@ dialog.site-dialog::backdrop {
 }
 
 dialog.site-dialog[open]::backdrop {
-  background: rgb(17 17 17 / 0.55);
+  background: rgb(14 27 46 / 0.6);
   backdrop-filter: blur(4px);
 }
 
 @starting-style {
   dialog.site-dialog[open]::backdrop {
-    background: rgb(17 17 17 / 0);
+    background: rgb(14 27 46 / 0);
     backdrop-filter: blur(0);
   }
 }

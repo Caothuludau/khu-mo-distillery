@@ -1,0 +1,47 @@
+{
+  "products": [
+    {
+      "slug": "ruou-nep-nhiet-doi",
+      "category": "traditional",
+      "palette": "navy",
+      "available": true,
+      "abv": null,
+      "images": [
+        "/images/ruou-nep-nhiet-doi-hoa-dao.webp",
+        "/images/ruou-nep-nhiet-doi-hoang-hon.webp",
+        "/images/ruou-nep-nhiet-doi-suong-gia.webp"
+      ],
+      "variants": [{ "volumeMl": null, "packaging": "bottle", "price": null }],
+      "name": { "vi": "Rượu nếp nhiệt đới", "en": "Tropical Sticky Rice Spirit" },
+      "tagline": { "vi": "Chắt lọc tinh hoa", "en": "Distilled essence" },
+      "colors": { "vi": "Xanh navy · Trắng", "en": "Navy · White" },
+      "description": {
+        "vi": "Dòng rượu nếp mang nhãn xanh navy của Khu Mỏ, được chưng cất và đóng chai tại xưởng ở Cẩm Phả, Quảng Ninh.",
+        "en": "Khu Mo's navy-label sticky rice spirit, distilled and bottled at the distillery in Cam Pha, Quang Ninh."
+      },
+      "ingredients": null,
+      "origin": {
+        "vi": "Sản xuất tại Cẩm Phả, Quảng Ninh",
+        "en": "Made in Cam Pha, Quang Ninh"
+      }
+    },
+    {
+      "slug": "ruou-mo-ngam-duong-phen",
+      "category": "infused",
+      "palette": "plum",
+      "available": true,
+      "abv": null,
+      "images": [],
+      "variants": [{ "volumeMl": null, "packaging": "bottle", "price": null }],
+      "name": { "vi": "Rượu mơ ngâm đường phèn", "en": "Apricot Spirit with Rock Sugar" },
+      "tagline": { "vi": "Dòng rượu ngâm", "en": "Infused line" },
+      "colors": { "vi": "Đỏ mận · Vàng kim", "en": "Plum · Gold" },
+      "description": {
+        "vi": "Rượu mơ ngâm cùng đường phèn. Thông tin chi tiết về sản phẩm đang được cập nhật.",
+        "en": "Apricots infused with rock sugar. Full product details are being updated."
+      },
+      "ingredients": null,
+      "origin": null
+    }
+  ]
+}
