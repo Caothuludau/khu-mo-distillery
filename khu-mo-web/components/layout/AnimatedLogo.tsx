@@ -73,7 +73,7 @@ export function AnimatedLogo({ locale }: AnimatedLogoProps) {
       ref={ref}
       href={`/${locale}`}
       aria-label={t.nav.home}
-      className="fixed left-1/2 top-0 z-[45] w-[min(82vw,680px)] origin-top rounded-sm will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="fixed left-1/2 top-0 z-[45] w-[min(55vw,450px)] origin-top rounded-sm will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       // Matches the scripted start position so the logo is placed correctly before hydration.
       style={{ transform: `translate3d(-50%, calc(${(1 - BOTTOM_GAP_RATIO) * 100}svh - 100%), 0)` }}
     >
