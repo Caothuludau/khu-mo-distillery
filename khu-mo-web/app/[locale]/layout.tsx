@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { TopBar } from "@/components/layout/TopBar";
+import { SiteUIProvider } from "@/components/providers/SiteUIProvider";
 import { getDictionary, getLocaleAlternates, isLocale, LOCALES } from "@/lib/i18n";
 import { getSiteUrl } from "@/lib/site-url";
+import { themeInitScript } from "@/lib/theme-script";
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -62,13 +64,18 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   return (
-    <html lang={locale} className="dark">
-      <body className="min-h-dvh bg-charcoal text-mineral-white antialiased">
-        <div className="flex min-h-dvh flex-col">
-          <SiteHeader locale={locale} />
-          <div className="flex-1">{children}</div>
-          <SiteFooter locale={locale} />
-        </div>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="min-h-dvh bg-background text-foreground antialiased">
+        <SiteUIProvider locale={locale}>
+          <div className="flex min-h-dvh flex-col">
+            <TopBar locale={locale} />
+            <div className="flex-1">{children}</div>
+            <SiteFooter locale={locale} />
+          </div>
+        </SiteUIProvider>
       </body>
     </html>
   );

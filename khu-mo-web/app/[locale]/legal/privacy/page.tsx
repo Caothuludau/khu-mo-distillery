@@ -31,11 +31,11 @@ export default async function PrivacyPolicyPage({ params }: PrivacyPageProps) {
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
       <h1 className="text-3xl font-semibold tracking-tight">{t.legal.privacyTitle}</h1>
-      <p className="mt-6 text-base leading-7 text-mineral-white/85">{t.legal.privacyBody1}</p>
-      <p className="mt-4 text-base leading-7 text-mineral-white/85">{t.legal.privacyBody2}</p>
+      <p className="mt-6 text-base leading-7 text-muted">{t.legal.privacyBody1}</p>
+      <p className="mt-4 text-base leading-7 text-muted">{t.legal.privacyBody2}</p>
       <Link
         href={`/${currentLocale}`}
-        className="mt-8 inline-block text-sm font-medium text-gold hover:text-copper"
+        className="mt-8 inline-block text-sm font-medium text-accent hover:text-accent-hover"
       >
         {t.legal.backHome}
       </Link>

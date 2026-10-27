@@ -11,11 +11,11 @@ export function Story({ locale }: StoryProps) {
   const t = getDictionary(locale);
 
   return (
-    <Section id="story" eyebrow={t.story.eyebrow} title={t.story.title}>
-      <div className="grid gap-8 md:grid-cols-[1.2fr_1fr]">
-        <div className="space-y-5">
-          <p className="text-base leading-7 text-mineral-white/85 md:text-lg">{t.story.body}</p>
-          <div className="relative aspect-[16/10] overflow-hidden rounded border border-mineral-white/15">
+    <Section id="story" eyebrow={t.story.eyebrow} title={t.story.title} className="bg-surface-muted">
+      <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-14">
+        <div className="space-y-6">
+          <p className="text-base leading-8 text-muted md:text-lg">{t.story.body}</p>
+          <div className="relative aspect-[16/10] overflow-hidden rounded-sm">
             <Image
               src={siteConfig.story.image}
               alt={t.story.imageAlt}
@@ -25,15 +25,16 @@ export function Story({ locale }: StoryProps) {
             />
           </div>
         </div>
-        <ul className="space-y-3">
-          {t.story.pillars.map((item) => (
-            <li
-              key={item}
-              className="rounded border border-mineral-white/15 bg-iron-gray/35 px-4 py-3 text-sm leading-6 text-mineral-white/90"
-            >
-              {item}
-            </li>
-          ))}
+        <ul className="divide-y divide-line self-center border-y border-line">
+          {t.story.pillars.map((item) => {
+            const [title, ...rest] = item.split(":");
+            return (
+              <li key={item} className="py-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">{title}</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">{rest.join(":").trim()}</p>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </Section>

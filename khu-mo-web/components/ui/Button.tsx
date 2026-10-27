@@ -2,13 +2,15 @@ import Link, { type LinkProps } from "next/link";
 import { cn } from "@/lib/utils";
 
 const baseStyles =
-  "inline-flex min-h-11 items-center justify-center rounded px-5 text-sm font-semibold uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-sm px-6 text-sm font-semibold uppercase tracking-[0.14em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants = {
   primary:
-    "bg-gold text-charcoal hover:bg-copper focus-visible:ring-mineral-white focus-visible:ring-offset-charcoal",
+    "bg-accent text-accent-foreground hover:bg-accent-hover focus-visible:ring-accent",
   ghost:
-    "border border-mineral-white/25 text-mineral-white hover:bg-mineral-white/10 focus-visible:ring-gold focus-visible:ring-offset-charcoal",
+    "border border-line text-foreground hover:bg-foreground/5 focus-visible:ring-accent",
+  light:
+    "bg-mineral-white text-charcoal hover:bg-white focus-visible:ring-mineral-white focus-visible:ring-offset-charcoal",
 } as const;
 
 type Variant = keyof typeof variants;

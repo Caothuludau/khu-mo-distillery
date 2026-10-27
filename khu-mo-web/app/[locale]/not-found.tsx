@@ -11,12 +11,12 @@ export default function LocaleNotFound() {
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">404</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">404</p>
       <h1 className="mt-3 text-3xl font-semibold tracking-tight">{t.notFound.title}</h1>
-      <p className="mt-6 text-base leading-7 text-mineral-white/85">{t.notFound.body}</p>
+      <p className="mt-6 text-base leading-7 text-muted">{t.notFound.body}</p>
       <Link
         href={`/${locale}`}
-        className="mt-8 inline-block text-sm font-medium text-gold hover:text-copper"
+        className="mt-8 inline-block text-sm font-medium text-accent hover:text-accent-hover"
       >
         {t.legal.backHome}
       </Link>

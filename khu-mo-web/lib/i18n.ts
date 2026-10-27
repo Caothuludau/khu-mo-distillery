@@ -1,4 +1,5 @@
-import type { GalleryKey, ProductKey } from "@/lib/site-config";
+import type { Interest } from "@/lib/contact";
+import type { ProductKey, SlideKey } from "@/lib/site-config";
 
 export const LOCALES = ["vi", "en"] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -17,25 +18,42 @@ type Dictionary = {
     ogLocale: string;
   };
   nav: {
+    home: string;
+    discover: string;
     story: string;
-    product: string;
+    visit: string;
     process: string;
-    gallery: string;
-    contact: string;
-    enquire: string;
-    menu: string;
+    openMenu: string;
     close: string;
+    menuLabel: string;
     language: string;
-    primaryLabel: string;
-    mobileLabel: string;
+    theme: string;
+    themeLight: string;
+    themeDark: string;
+    search: string;
+    account: string;
+    wishlist: string;
   };
   hero: {
-    tagline: string;
+    label: string;
+    previous: string;
+    next: string;
+    goTo: string;
+    pause: string;
+    play: string;
+    scrollHint: string;
+    slides: Record<SlideKey, { title: string; description: string }>;
+  };
+  discover: {
+    eyebrow: string;
     title: string;
-    subtitle: string;
-    primaryCta: string;
-    secondaryCta: string;
-    logoAlt: string;
+    previous: string;
+    next: string;
+    enquire: string;
+    addToWishlist: string;
+    removeFromWishlist: string;
+    categories: Record<ProductCategory, string>;
+    items: Record<ProductKey, { name: string; blurb: string; category: ProductCategory }>;
   };
   story: {
     eyebrow: string;
@@ -44,12 +62,12 @@ type Dictionary = {
     pillars: string[];
     imageAlt: string;
   };
-  product: {
+  visit: {
     eyebrow: string;
     title: string;
-    enquire: string;
-    categories: Record<ProductCategory, string>;
-    items: Record<ProductKey, { name: string; blurb: string; category: ProductCategory }>;
+    body: string;
+    cta: string;
+    videoLabel: string;
   };
   process: {
     eyebrow: string;
@@ -57,16 +75,13 @@ type Dictionary = {
     imageAlt: string;
     steps: { title: string; detail: string }[];
   };
-  gallery: {
-    eyebrow: string;
-    title: string;
-    captions: Record<GalleryKey, string>;
+  enquiry: {
+    visitTitle: string;
+    visitIntro: string;
+    productTitle: string;
+    productIntro: string;
   };
   contact: {
-    eyebrow: string;
-    title: string;
-    intro: string;
-    imageAlt: string;
     labels: {
       name: string;
       email: string;
@@ -77,12 +92,7 @@ type Dictionary = {
     placeholders: {
       phone: string;
     };
-    options: {
-      general: string;
-      product: string;
-      events: string;
-      trade: string;
-    };
+    options: Record<Interest, string>;
     productPrefill: string;
     buttonIdle: string;
     buttonSending: string;
@@ -96,9 +106,33 @@ type Dictionary = {
       message: string;
     };
   };
+  search: {
+    label: string;
+    placeholder: string;
+    empty: string;
+    hint: string;
+  };
+  account: {
+    signInTitle: string;
+    registerTitle: string;
+    name: string;
+    email: string;
+    password: string;
+    signIn: string;
+    register: string;
+    toRegister: string;
+    toSignIn: string;
+    comingSoon: string;
+  };
+  wishlist: {
+    title: string;
+    empty: string;
+    remove: string;
+    enquire: string;
+    count: string;
+  };
   footer: {
     heritage: string;
-    contact: string;
     privacy: string;
     terms: string;
   };
@@ -128,43 +162,57 @@ const dictionaries: Record<Locale, Dictionary> = {
       ogLocale: "vi_VN",
     },
     nav: {
+      home: "Trang chủ Khu Mỏ",
+      discover: "Khám phá",
       story: "Câu chuyện",
-      product: "Sản phẩm",
-      process: "Quy trình",
-      gallery: "Hình ảnh",
-      contact: "Liên hệ",
-      enquire: "Tư vấn",
-      menu: "Menu",
+      visit: "Tham quan",
+      process: "Chế tác",
+      openMenu: "Mở menu",
       close: "Đóng",
+      menuLabel: "Điều hướng",
       language: "Ngôn ngữ",
-      primaryLabel: "Điều hướng chính",
-      mobileLabel: "Điều hướng di động",
+      theme: "Giao diện",
+      themeLight: "Sáng",
+      themeDark: "Tối",
+      search: "Tìm kiếm",
+      account: "Đăng nhập / Đăng ký",
+      wishlist: "Yêu thích",
     },
     hero: {
-      tagline: "Khu Mỏ Distillery",
-      title: "Tôi luyện dưới lòng đất. Bản lĩnh trên đỉnh cao.",
-      subtitle:
-        "Rượu thủ công cao cấp mang tinh thần núi rừng Việt Nam, kết hợp di sản nguyên bản và kỹ thuật hiện đại.",
-      primaryCta: "Tư vấn",
-      secondaryCta: "Khám phá sản phẩm",
-      logoAlt: "Logo Rượu Khu Mỏ Distillery",
+      label: "Hình ảnh nổi bật",
+      previous: "Ảnh trước",
+      next: "Ảnh tiếp theo",
+      goTo: "Xem ảnh {n}",
+      pause: "Tạm dừng trình chiếu",
+      play: "Tiếp tục trình chiếu",
+      scrollHint: "Cuộn xuống",
+      slides: {
+        highland: {
+          title: "Highland Reserve",
+          description: "Hậu vị khói nhẹ, sinh ra từ đá núi và lửa hoàng hôn.",
+        },
+        craft: {
+          title: "Xưởng chưng cất",
+          description: "Nơi nồi đồng và sự kiên nhẫn tôi luyện từng mẻ rượu.",
+        },
+        bloom: {
+          title: "Copper Bloom",
+          description: "Hương hoa mùa xuân, ấm áp và tinh tế.",
+        },
+        frost: {
+          title: "River Stone",
+          description: "Trong trẻo như sương giá, dành cho những ly cocktail cao cấp.",
+        },
+      },
     },
-    story: {
-      eyebrow: "Di sản",
-      title: "Câu chuyện được tạo nên từ độ cao và lửa",
-      body: "Khu Mỏ bắt đầu nơi không khí núi rừng se lạnh, nguyên liệu chân thật, và nghề làm rượu gắn liền với đời sống cộng đồng. Mỗi chai rượu là tri thức truyền đời được tinh chỉnh cho vị giác hiện đại.",
-      pillars: [
-        "Nguồn gốc: truyền thống làng núi được gìn giữ qua nhiều thế hệ.",
-        "Chế tác: chưng cất nồi đồng, ủ chậm để cân bằng và tạo chiều sâu.",
-        "Đẳng cấp: sản xuất giới hạn, tuyển chọn chất lượng nghiêm ngặt.",
-        "Nghi thức: dành cho những khoảnh khắc kết nối, quà tặng và lễ kỷ niệm.",
-      ],
-      imageAlt: "Bên trong xưởng chưng cất Khu Mỏ với nồi đồng và bồn inox",
-    },
-    product: {
-      eyebrow: "Nổi bật",
-      title: "Sản phẩm small-batch với cá tính riêng",
+    discover: {
+      eyebrow: "Khám phá",
+      title: "Những dòng rượu làm nên Khu Mỏ",
+      previous: "Sản phẩm trước",
+      next: "Sản phẩm tiếp theo",
       enquire: "Tư vấn",
+      addToWishlist: "Thêm vào yêu thích",
+      removeFromWishlist: "Bỏ khỏi yêu thích",
       categories: {
         signature: "Dấu ấn thương hiệu",
         limited: "Giới hạn",
@@ -188,8 +236,27 @@ const dictionaries: Record<Locale, Dictionary> = {
         },
       },
     },
+    story: {
+      eyebrow: "Di sản",
+      title: "Câu chuyện được tạo nên từ độ cao và lửa",
+      body: "Khu Mỏ bắt đầu nơi không khí núi rừng se lạnh, nguyên liệu chân thật, và nghề làm rượu gắn liền với đời sống cộng đồng. Mỗi chai rượu là tri thức truyền đời được tinh chỉnh cho vị giác hiện đại.",
+      pillars: [
+        "Nguồn gốc: truyền thống làng núi được gìn giữ qua nhiều thế hệ.",
+        "Chế tác: chưng cất nồi đồng, ủ chậm để cân bằng và tạo chiều sâu.",
+        "Đẳng cấp: sản xuất giới hạn, tuyển chọn chất lượng nghiêm ngặt.",
+        "Nghi thức: dành cho những khoảnh khắc kết nối, quà tặng và lễ kỷ niệm.",
+      ],
+      imageAlt: "Bên trong xưởng chưng cất Khu Mỏ với nồi đồng và bồn inox",
+    },
+    visit: {
+      eyebrow: "Tham quan",
+      title: "Ghé thăm xưởng rượu Khu Mỏ",
+      body: "Tận mắt xem nồi đồng hoạt động, nghe câu chuyện của người thợ, và nếm thử những mẻ rượu mới nhất ngay tại xưởng.",
+      cta: "Đặt lịch tham quan",
+      videoLabel: "Video giới thiệu xưởng rượu Khu Mỏ",
+    },
     process: {
-      eyebrow: "Chế tác",
+      eyebrow: "Quy trình & Đam mê",
       title: "Từ nguyên liệu thô đến ly rượu nghi thức",
       imageAlt: "Khu vực chưng cất và ủ rượu tại xưởng Khu Mỏ",
       steps: [
@@ -200,23 +267,13 @@ const dictionaries: Record<Locale, Dictionary> = {
         { title: "Đóng chai", detail: "Cân chỉnh nồng độ, kiểm định và hoàn thiện thủ công." },
       ],
     },
-    gallery: {
-      eyebrow: "Bộ sưu tập",
-      title: "Góc nhìn từ nguyên liệu, quy trình và khoảnh khắc",
-      captions: {
-        distillery: "Xưởng chưng cất",
-        "highland-dusk": "Highland Reserve lúc hoàng hôn",
-        "copper-blossom": "Copper Bloom giữa mùa hoa",
-        "river-frost": "River Stone trong sương giá",
-        brand: "Dấu ấn Khu Mỏ",
-      },
+    enquiry: {
+      visitTitle: "Đặt lịch tham quan",
+      visitIntro: "Để lại thông tin, đội ngũ Khu Mỏ sẽ liên hệ để chốt lịch phù hợp với bạn.",
+      productTitle: "Tư vấn sản phẩm",
+      productIntro: "Cho chúng tôi biết nhu cầu của bạn, đội ngũ sẽ phản hồi với thông tin và gợi ý phù hợp.",
     },
     contact: {
-      eyebrow: "Liên hệ",
-      title: "Đồng hành cùng ly rượu tiếp theo của bạn",
-      intro:
-        "Cho chúng tôi biết nhu cầu của bạn, đội ngũ sẽ phản hồi với thông tin sản phẩm, gợi ý và hướng dẫn tiếp theo.",
-      imageAlt: "Xưởng chưng cất Khu Mỏ",
       labels: {
         name: "Họ tên",
         email: "Email",
@@ -228,10 +285,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         phone: "Nhập số điện thoại",
       },
       options: {
-        general: "Tổng quan",
+        visit: "Tham quan xưởng",
         product: "Sản phẩm",
         events: "Sự kiện",
         trade: "Thương mại",
+        general: "Khác",
       },
       productPrefill: "Tôi quan tâm đến sản phẩm {product}.",
       buttonIdle: "Gửi yêu cầu",
@@ -246,9 +304,33 @@ const dictionaries: Record<Locale, Dictionary> = {
         message: "Vui lòng chia sẻ thêm chi tiết.",
       },
     },
+    search: {
+      label: "Tìm sản phẩm",
+      placeholder: "Tìm theo tên hoặc hương vị...",
+      empty: "Không tìm thấy sản phẩm phù hợp.",
+      hint: "Gợi ý",
+    },
+    account: {
+      signInTitle: "Đăng nhập",
+      registerTitle: "Đăng ký",
+      name: "Họ tên",
+      email: "Email",
+      password: "Mật khẩu",
+      signIn: "Đăng nhập",
+      register: "Tạo tài khoản",
+      toRegister: "Chưa có tài khoản? Đăng ký",
+      toSignIn: "Đã có tài khoản? Đăng nhập",
+      comingSoon: "Tính năng tài khoản đang được hoàn thiện và sẽ sớm ra mắt.",
+    },
+    wishlist: {
+      title: "Danh sách yêu thích",
+      empty: "Bạn chưa lưu sản phẩm nào. Nhấn biểu tượng trái tim ở mục Khám phá để lưu.",
+      remove: "Bỏ khỏi yêu thích",
+      enquire: "Tư vấn",
+      count: "{n} sản phẩm yêu thích",
+    },
     footer: {
       heritage: "Bắt rễ từ lửa nghề truyền thống, hoàn thiện cho nghi thức hiện đại.",
-      contact: "Liên hệ",
       privacy: "Chính sách bảo mật",
       terms: "Điều khoản sử dụng",
     },
@@ -280,43 +362,57 @@ const dictionaries: Record<Locale, Dictionary> = {
       ogLocale: "en_US",
     },
     nav: {
+      home: "Khu Mo home",
+      discover: "Discover",
       story: "Story",
-      product: "Product",
+      visit: "Visit",
       process: "Process",
-      gallery: "Gallery",
-      contact: "Contact",
-      enquire: "Enquire",
-      menu: "Menu",
+      openMenu: "Open menu",
       close: "Close",
+      menuLabel: "Navigation",
       language: "Language",
-      primaryLabel: "Primary",
-      mobileLabel: "Mobile navigation",
+      theme: "Theme",
+      themeLight: "Light",
+      themeDark: "Dark",
+      search: "Search",
+      account: "Sign in / Register",
+      wishlist: "Wishlist",
     },
     hero: {
-      tagline: "Khu Mo Distillery",
-      title: "Forged Below. Owned Above.",
-      subtitle:
-        "Premium craft liquor from Vietnam's mountain spirit tradition, made with raw heritage and modern precision.",
-      primaryCta: "Enquire",
-      secondaryCta: "Explore Product",
-      logoAlt: "Khu Mo Distillery logo",
+      label: "Featured images",
+      previous: "Previous image",
+      next: "Next image",
+      goTo: "Show image {n}",
+      pause: "Pause slideshow",
+      play: "Play slideshow",
+      scrollHint: "Scroll",
+      slides: {
+        highland: {
+          title: "Highland Reserve",
+          description: "A gentle smoke, born of mountain stone and sunset fire.",
+        },
+        craft: {
+          title: "The distillery",
+          description: "Where copper stills and patience forge every batch.",
+        },
+        bloom: {
+          title: "Copper Bloom",
+          description: "Spring blossom on the nose, warm and refined.",
+        },
+        frost: {
+          title: "River Stone",
+          description: "Frost-clear and built for premium cocktails.",
+        },
+      },
     },
-    story: {
-      eyebrow: "Heritage",
-      title: "A story shaped by altitude and fire",
-      body: "Khu Mo begins where mountain air is cold, ingredients are honest, and spirit-making is part of communal life. Every bottle reflects ancestral knowledge refined for modern palates.",
-      pillars: [
-        "Origin: mountain village traditions preserved through family craft.",
-        "Craft: copper still distillation, slow-rested for balance and depth.",
-        "Status: small-batch production with strict quality selection.",
-        "Ritual: designed for shared moments, gifting, and celebration.",
-      ],
-      imageAlt: "Inside the Khu Mo distillery with copper stills and steel tanks",
-    },
-    product: {
-      eyebrow: "Featured",
-      title: "Small-batch spirits with distinct character",
+    discover: {
+      eyebrow: "Discover",
+      title: "The spirits that define Khu Mo",
+      previous: "Previous product",
+      next: "Next product",
       enquire: "Enquire",
+      addToWishlist: "Add to wishlist",
+      removeFromWishlist: "Remove from wishlist",
       categories: {
         signature: "Signature",
         limited: "Limited Batch",
@@ -340,8 +436,27 @@ const dictionaries: Record<Locale, Dictionary> = {
         },
       },
     },
+    story: {
+      eyebrow: "Heritage",
+      title: "A story shaped by altitude and fire",
+      body: "Khu Mo begins where mountain air is cold, ingredients are honest, and spirit-making is part of communal life. Every bottle reflects ancestral knowledge refined for modern palates.",
+      pillars: [
+        "Origin: mountain village traditions preserved through family craft.",
+        "Craft: copper still distillation, slow-rested for balance and depth.",
+        "Status: small-batch production with strict quality selection.",
+        "Ritual: designed for shared moments, gifting, and celebration.",
+      ],
+      imageAlt: "Inside the Khu Mo distillery with copper stills and steel tanks",
+    },
+    visit: {
+      eyebrow: "Visit",
+      title: "Visit the Khu Mo distillery",
+      body: "See the copper stills at work, hear the makers' stories, and taste the latest batches right where they are made.",
+      cta: "Book a visit",
+      videoLabel: "Introduction video of the Khu Mo distillery",
+    },
     process: {
-      eyebrow: "Craft",
+      eyebrow: "Process & Passion",
       title: "From raw ingredient to ritual pour",
       imageAlt: "Distilling and resting area at the Khu Mo distillery",
       steps: [
@@ -352,23 +467,13 @@ const dictionaries: Record<Locale, Dictionary> = {
         { title: "Bottle", detail: "Final proofing, quality checks, and hand-finished bottling." },
       ],
     },
-    gallery: {
-      eyebrow: "Gallery",
-      title: "Visual notes from place and process",
-      captions: {
-        distillery: "The distillery floor",
-        "highland-dusk": "Highland Reserve at dusk",
-        "copper-blossom": "Copper Bloom in blossom season",
-        "river-frost": "River Stone, frost-clear",
-        brand: "The Khu Mo mark",
-      },
+    enquiry: {
+      visitTitle: "Book a visit",
+      visitIntro: "Leave your details and the Khu Mo team will be in touch to confirm a time that suits you.",
+      productTitle: "Product enquiry",
+      productIntro: "Tell us what you are looking for and our team will reply with availability and recommendations.",
     },
     contact: {
-      eyebrow: "Contact",
-      title: "Let us help with your next pour",
-      intro:
-        "Share what you are looking for and our team will get back with availability, recommendations, and next steps.",
-      imageAlt: "The Khu Mo distillery",
       labels: {
         name: "Name",
         email: "Email",
@@ -380,10 +485,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         phone: "Enter your phone number",
       },
       options: {
-        general: "General",
+        visit: "Distillery visit",
         product: "Product",
         events: "Events",
         trade: "Trade",
+        general: "Other",
       },
       productPrefill: "I'm interested in {product}.",
       buttonIdle: "Send Enquiry",
@@ -398,9 +504,33 @@ const dictionaries: Record<Locale, Dictionary> = {
         message: "Please share a bit more detail.",
       },
     },
+    search: {
+      label: "Search products",
+      placeholder: "Search by name or flavour...",
+      empty: "No matching products.",
+      hint: "Suggestions",
+    },
+    account: {
+      signInTitle: "Sign in",
+      registerTitle: "Register",
+      name: "Name",
+      email: "Email",
+      password: "Password",
+      signIn: "Sign in",
+      register: "Create account",
+      toRegister: "New here? Create an account",
+      toSignIn: "Already have an account? Sign in",
+      comingSoon: "Accounts are coming soon.",
+    },
+    wishlist: {
+      title: "Wishlist",
+      empty: "Nothing saved yet. Tap the heart on a product in Discover to save it.",
+      remove: "Remove from wishlist",
+      enquire: "Enquire",
+      count: "{n} saved products",
+    },
     footer: {
       heritage: "Rooted in ancestral fire, crafted for modern ritual.",
-      contact: "Contact",
       privacy: "Privacy",
       terms: "Terms",
     },

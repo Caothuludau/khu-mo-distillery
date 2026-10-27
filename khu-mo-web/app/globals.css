@@ -1,23 +1,42 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /*
  * Brand tokens — source: UI_UX_BRAND.md
  * Charcoal, iron gray, copper, gold, mineral white
  */
 :root {
-  /* Canonical palette — UI_UX_BRAND.md */
   --brand-charcoal: #111111;
   --brand-iron-gray: #2b2b2b;
   --brand-copper: #8a5a3b;
   --brand-gold: #b08d57;
   --brand-mineral-white: #edeae4;
 
-  /* Semantic aliases (same values) */
-  --color-charcoal: var(--brand-charcoal);
-  --color-iron-gray: var(--brand-iron-gray);
-  --color-copper: var(--brand-copper);
-  --color-gold: var(--brand-gold);
-  --color-mineral-white: var(--brand-mineral-white);
+  /* Light theme (default). Copper is the accent because gold lacks contrast on light surfaces. */
+  --background: #f6f4ef;
+  --foreground: #111111;
+  --surface: #ffffff;
+  --surface-muted: #edeae4;
+  --line: rgb(17 17 17 / 0.12);
+  --muted: #55524d;
+  --accent: #8a5a3b;
+  --accent-hover: #6f4630;
+  --accent-foreground: #f6f4ef;
+
+  --topbar-height: 4rem;
+}
+
+[data-theme="dark"] {
+  --background: #111111;
+  --foreground: #edeae4;
+  --surface: #2b2b2b;
+  --surface-muted: #1b1b1b;
+  --line: rgb(237 234 228 / 0.15);
+  --muted: #b9b6b0;
+  --accent: #b08d57;
+  --accent-hover: #c9a56c;
+  --accent-foreground: #111111;
 }
 
 @theme inline {
@@ -26,19 +45,112 @@
   --color-copper: var(--brand-copper);
   --color-gold: var(--brand-gold);
   --color-mineral-white: var(--brand-mineral-white);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: calc(var(--topbar-height) + 1rem);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--brand-charcoal);
-  color: var(--brand-mineral-white);
+  background: var(--background);
+  color: var(--foreground);
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
 }
 
-[id] {
-  scroll-margin-top: 5.5rem;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Native <dialog> panels: fade the backdrop, slide the panel from its anchored edge. */
+dialog.site-dialog {
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0;
+  transition:
+    opacity 250ms ease,
+    translate 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+dialog.site-dialog[open] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@starting-style {
+  dialog.site-dialog[open] {
+    opacity: 0;
+  }
+  dialog.site-dialog[data-side="left"][open] {
+    translate: -100% 0;
+  }
+  dialog.site-dialog[data-side="right"][open] {
+    translate: 100% 0;
+  }
+  dialog.site-dialog[data-side="top"][open] {
+    translate: 0 -1.5rem;
+  }
+  dialog.site-dialog[data-side="center"][open] {
+    translate: 0 1rem;
+  }
+}
+
+dialog.site-dialog::backdrop {
+  background: rgb(17 17 17 / 0);
+  backdrop-filter: blur(0);
+  transition:
+    background 250ms ease,
+    backdrop-filter 250ms ease,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+
+dialog.site-dialog[open]::backdrop {
+  background: rgb(17 17 17 / 0.55);
+  backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  dialog.site-dialog[open]::backdrop {
+    background: rgb(17 17 17 / 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12);
+  }
 }

@@ -1,4 +1,4 @@
-export const INTEREST_VALUES = ["general", "product", "events", "trade"] as const;
+export const INTEREST_VALUES = ["visit", "product", "events", "trade", "general"] as const;
 export type Interest = (typeof INTEREST_VALUES)[number];
 
 export function isInterest(value: string | null | undefined): value is Interest {

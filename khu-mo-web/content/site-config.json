@@ -1,39 +1,32 @@
 {
+  "brand": {
+    "logoImage": "/images/khu-mo-logo-light.png",
+    "logoAspectRatio": 2.3015
+  },
   "hero": {
-    "logoImage": "/images/khu-mo-logo-light.png"
+    "intervalMs": 6500,
+    "slides": [
+      { "key": "highland", "image": "/images/product-highland-reserve.webp", "logoTone": "light" },
+      { "key": "craft", "image": "/images/distillery.webp", "logoTone": "light" },
+      { "key": "bloom", "image": "/images/product-copper-bloom.webp", "logoTone": "dark" },
+      { "key": "frost", "image": "/images/product-river-stone.webp", "logoTone": "light" }
+    ]
+  },
+  "product": {
+    "items": [
+      { "key": "highland-reserve", "image": "/images/product-highland-reserve.webp" },
+      { "key": "copper-bloom", "image": "/images/product-copper-bloom.webp" },
+      { "key": "river-stone", "image": "/images/product-river-stone.webp" }
+    ]
   },
   "story": {
     "image": "/images/distillery.webp"
   },
-  "product": {
-    "items": [
-      {
-        "key": "highland-reserve",
-        "image": "/images/product-highland-reserve.webp"
-      },
-      {
-        "key": "copper-bloom",
-        "image": "/images/product-copper-bloom.webp"
-      },
-      {
-        "key": "river-stone",
-        "image": "/images/product-river-stone.webp"
-      }
-    ]
+  "visit": {
+    "poster": "/images/distillery.webp",
+    "videoSrc": null
   },
   "process": {
-    "backgroundImage": "/images/distillery.webp"
-  },
-  "gallery": {
-    "items": [
-      { "key": "distillery", "image": "/images/distillery.webp" },
-      { "key": "highland-dusk", "image": "/images/product-highland-reserve.webp" },
-      { "key": "copper-blossom", "image": "/images/product-copper-bloom.webp" },
-      { "key": "river-frost", "image": "/images/product-river-stone.webp" },
-      { "key": "brand", "image": "/images/khu-mo-logo-light.png", "fit": "contain" }
-    ]
-  },
-  "contact": {
     "backgroundImage": "/images/distillery.webp"
   }
 }

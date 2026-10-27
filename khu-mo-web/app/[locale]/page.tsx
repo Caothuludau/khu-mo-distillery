@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
-import { Contact } from "@/components/sections/Contact";
-import { Gallery } from "@/components/sections/Gallery";
-import { Hero } from "@/components/sections/Hero";
+import { Discover } from "@/components/sections/Discover";
+import { HeroBanner } from "@/components/sections/HeroBanner";
 import { Process } from "@/components/sections/Process";
-import { Product } from "@/components/sections/Product";
 import { Story } from "@/components/sections/Story";
+import { Visit } from "@/components/sections/Visit";
 import { isLocale } from "@/lib/i18n";
 
 type LocalePageProps = {
@@ -19,12 +18,11 @@ export default async function LocaleHomePage({ params }: LocalePageProps) {
 
   return (
     <main>
-      <Hero locale={locale} />
+      <HeroBanner locale={locale} />
+      <Discover locale={locale} />
       <Story locale={locale} />
-      <Product locale={locale} />
+      <Visit locale={locale} />
       <Process locale={locale} />
-      <Gallery locale={locale} />
-      <Contact locale={locale} />
     </main>
   );
 }
